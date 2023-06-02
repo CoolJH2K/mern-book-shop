@@ -1,4 +1,5 @@
 const express = require('express');
+const {ApolloServer} = require("apollo-server-express");
 const path = require('path');
 const db = require('./config/connection');
 const routes = require('./routes');
@@ -16,6 +17,15 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(routes);
 
-db.once('open', () => {
-  app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
-});
+// Create new Apollo server instance
+const startApolloServer = async () => {
+  await server.start();
+  server.applyMiddleware({app});
+
+  db.once('open', () => {
+    app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
+  })
+};
+
+// Start the Apollo server
+startApolloServer();
