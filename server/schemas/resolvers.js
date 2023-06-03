@@ -14,4 +14,7 @@ const resolvers = {
             const user = await User.create();
         }
     }
-}
+};
+
+// Export resolvers
+module.exports = resolvers;
